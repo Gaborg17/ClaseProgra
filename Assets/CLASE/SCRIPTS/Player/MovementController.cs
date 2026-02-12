@@ -15,12 +15,13 @@ public class MovementController : NetworkBehaviour
 
     private InputInfo input;
 
-    private void Start()
+
+    public override void Spawned()
     {
         inputManager = InputManager.Instance;
         rbPlayer = GetComponent<Rigidbody>();
     }
-    
+
 
     public override void FixedUpdateNetwork()
     {
@@ -51,9 +52,9 @@ public class MovementController : NetworkBehaviour
 
     private void Movement()
     {
-        rbPlayer.linearVelocity = transform.localRotation *
-                            new Vector3(input.playerPosition.x, 0, input.playerPosition.y) *
-                            (Time.deltaTime * Speed());
+        rbPlayer.linearVelocity = transform.localRotation * 
+            new Vector3(input.playerPosition.x, 0, input.playerPosition.y) *
+            (Time.deltaTime * Speed());
     }
 
     private float Speed()

@@ -35,7 +35,7 @@ public abstract class Weapons : MonoBehaviour
 
         if(Physics.Raycast(bulletOrigin.position, bulletOrigin.forward,out hit, weaponRange, damageableMask))
         {
-            
+            Debug.Log($"Disparando a {hit.collider.name}" );
         }
     }
 
@@ -43,11 +43,11 @@ public abstract class Weapons : MonoBehaviour
     public virtual void PhysyicalShoot()
     {
         Debug.Log("Disparando objeto");
-        //GameObject bullet = Instantiate(bulletPrefab, bulletOrigin);
+        GameObject bullet = Instantiate(bulletPrefab, bulletOrigin);
 
-        //Rigidbody rbB = bullet.GetComponent<Rigidbody>();
+        Rigidbody rbB = bullet.GetComponent<Rigidbody>();
 
-        //rbB.AddForce(bulletOrigin.forward * bulletSpeed, ForceMode.VelocityChange);
+        rbB.AddForce(bulletOrigin.forward * bulletSpeed, ForceMode.VelocityChange);
     }
 
     public abstract void Reload();
