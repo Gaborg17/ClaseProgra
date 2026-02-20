@@ -56,7 +56,8 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
             isRunInputPressed = InputManager.Instance.WasRunInputPressed(),
             isMovingBackwards = InputManager.Instance.IsMovingBackwards(),
             isMovingOnXAxis = InputManager.Instance.IsMovingOnXAxis(),
-            isFirePressed = InputManager.Instance.IsMainFirePressed()
+            isFirePressed = InputManager.Instance.IsMainFirePressed(),
+            isReloadPressed = InputManager.Instance.IsReloadPressed()
         };
         input.Set(info);
         

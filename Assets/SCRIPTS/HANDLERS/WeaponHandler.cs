@@ -1,4 +1,5 @@
 using Fusion;
+using System;
 using UnityEngine;
 using UnityEngine.Windows;
 
@@ -8,24 +9,24 @@ public class WeaponHandler : NetworkBehaviour
 
     private InputInfo input;
 
+    Action Shoot;
+
     public void ShootWeapon()
     {
         if (input.isFirePressed)
         {
-            ShootType();
+            Shoot();
         }
     }
-
-
-    public void ShootType()
+    private void Start()
     {
         switch (weaponInHand._mode._type)
         {
             case ShootMode.ShootType.Raycast:
-                weaponInHand.RaycastShoot();
+                Shoot = weaponInHand.RaycastShoot;
                 break;
             case ShootMode.ShootType.Fisico:
-                weaponInHand.PhysyicalShoot(); 
+                Shoot = weaponInHand.PhysyicalShoot;
                 break;
             default:
                 Debug.Log("Sin tippo asignado");
@@ -33,9 +34,13 @@ public class WeaponHandler : NetworkBehaviour
         }
     }
 
+
     public void ReloadWeapon()
     {
-
+        if (input.isReloadPressed)
+        {
+            weaponInHand.Reload();
+        }
     }
 
     public override void FixedUpdateNetwork()
@@ -43,6 +48,7 @@ public class WeaponHandler : NetworkBehaviour
         if (HasInputAuthority && GetInput(out input))
         {
             ShootWeapon();
+            ReloadWeapon();
         }
     }
 }

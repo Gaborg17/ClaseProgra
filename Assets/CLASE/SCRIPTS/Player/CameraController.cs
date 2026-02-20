@@ -52,7 +52,7 @@ public class CameraController : NetworkBehaviour
         inputManager = InputManager.Instance;
         if (player == null)
         {
-            player = FindObjectOfType<MovementController>().transform;
+            player = FindFirstObjectByType<MovementController>().transform;
         }
 
         Cursor.lockState = CursorLockMode.None;

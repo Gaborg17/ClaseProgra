@@ -12,6 +12,8 @@ public struct InputInfo : INetworkInput
     public bool isMovingOnXAxis;
 
     public bool isFirePressed;
+    public bool isReloadPressed;
 
+    public Vector3 bulletPosition;
 
 }

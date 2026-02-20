@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1314709057883085869
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 510987610800462730}
+  m_Layer: 0
+  m_Name: BulletSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &510987610800462730
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314709057883085869}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.329, z: 1.372}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5636238501336199956}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2686099430407990011
 GameObject:
   m_ObjectHideFlags: 0
@@ -66,6 +97,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6422495589753890666}
+  - {fileID: 510987610800462730}
   m_Father: {fileID: 9146452467039192700}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4065693959280916102
@@ -84,20 +116,20 @@ MonoBehaviour:
     _type: 1
   actualAmmo: 0
   maxAmmo: 0
-  shootCooldown: 0
-  rechargeTime: 0
+  fireRate: 0
+  reloadTime: 0
   canShoot: 0
   isRecharging: 0
-  bulletOrigin: {fileID: 5636238501336199956}
+  bulletOrigin: {fileID: 510987610800462730}
   inventoryAmmo: 0
   weaponRange: 15
-  drawRay: 1
   damageableMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   bulletDamage: 0
-  bulletPrefab: {fileID: 6481948031603889943, guid: 47bfdf65f8167444da438a15137a477c, type: 3}
-  bulletSpeed: 0.2
+  playerCamera: {fileID: 6632507903907867383}
+  bulletPrefab:
+    RawGuidValue: 47bfdf65f8167444da438a15137a477c
 --- !u!20 &6632507903907867383
 Camera:
   m_ObjectHideFlags: 0
@@ -318,15 +350,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 55490c0cec081d54ead6cc6d7cbaecc4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.07146454
+      value: 6.277157
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 55490c0cec081d54ead6cc6d7cbaecc4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.00000047683716
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 55490c0cec081d54ead6cc6d7cbaecc4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.5006943
+      value: 9.271341
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 55490c0cec081d54ead6cc6d7cbaecc4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1224,6 +1256,7 @@ MonoBehaviour:
   - {fileID: 1990609278137764959}
   - {fileID: 7310286679688691697}
   - {fileID: 4737237169342878489}
+  - {fileID: 4065693959280916102}
   - {fileID: 307644422146194193}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &4737237169342878489

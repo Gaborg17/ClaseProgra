@@ -72,5 +72,10 @@ public class InputManager : MonoBehaviour
     {
         return playerControls.Player.Fire.IsPressed();
     }
+
+    public bool IsReloadPressed()
+    {
+        return playerControls.Player.Reload.IsPressed();
+    }
     
 }
