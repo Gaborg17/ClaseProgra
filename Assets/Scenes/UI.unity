@@ -734,7 +734,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runner: {fileID: 0}
-  joined:
+  Joined:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1476618244}

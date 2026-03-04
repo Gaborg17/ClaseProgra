@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1695101789243264544}
   - component: {fileID: -5104618291015685852}
   - component: {fileID: -8971017232051541285}
+  - component: {fileID: -8411310803686681252}
   m_Layer: 0
   m_Name: Bala
   m_TagString: Untagged
@@ -150,10 +151,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3db899f1489964646a6265e6887a5d25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 500
-  mask:
-    serializedVersion: 2
-    m_Bits: 0
+  speed: 10
+  damage: 10
+  lifeTime: 2
 --- !u!114 &-8971017232051541285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,4 +172,22 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: -5104618291015685852}
+  - {fileID: -8411310803686681252}
   ForceRemoteRenderTimeframe: 0
+--- !u!114 &-8411310803686681252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6481948031603889943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0

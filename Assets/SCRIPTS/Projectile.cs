@@ -5,10 +5,18 @@ using UnityEngine;
 public class Projectile : NetworkBehaviour
 {
     [SerializeField] private float speed;
-    [SerializeField] private LayerMask mask;
+    [SerializeField] private byte damageP;
+    [SerializeField] private float lifeTime;
 
+    private PlayerRef shooter;
 
     private Rigidbody rb;
+
+    public void SetData(PlayerRef playerRef, byte damage)
+    {
+        shooter = playerRef;
+        damageP = damage;
+    }
 
 
     public override void Spawned()
@@ -23,7 +31,9 @@ public class Projectile : NetworkBehaviour
     {
         if (rb != null)
         {
-            rb.AddForce(transform.forward * speed, ForceMode.Force);
+            rb.linearVelocity = transform.forward * speed;
+
+            DespawnBullet();
         }
     }
 
@@ -32,22 +42,19 @@ public class Projectile : NetworkBehaviour
     {
         if (collision.collider.CompareTag("Damageable"))
         {
-            RPC_DestroyOnCollision(this.Object);
+            Runner.Despawn(Object);
+
         }
 
     }
 
 
-    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-    public void RPC_DestroyOnCollision(NetworkId networkId)
+
+    private async void DespawnBullet()
     {
-        if (Runner.IsServer)
-        {
-            if (Runner.TryFindObject(networkId, out NetworkObject networkObject))
-            {
-                Runner.Despawn(networkObject);
-            }
-        }
+        await Task.Delay((int)(lifeTime * 1000));
+        Runner.Despawn(Object);
+        
     }
     
 }

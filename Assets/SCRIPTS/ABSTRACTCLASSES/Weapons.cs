@@ -7,21 +7,21 @@ public abstract class Weapons : NetworkBehaviour
     
     public ShootMode _mode;
 
-    public int actualAmmo;
-    public int maxAmmo;
+    public byte actualAmmo;
+    public byte maxAmmo;
     public float fireRate;
     public float reloadTime;
     public bool canShoot;
     public bool isRecharging;
     public Transform bulletOrigin;
-    public int inventoryAmmo;
+    public ushort inventoryAmmo;
 
 
     [Header("Raycast Mode")]
     public float weaponRange;
     protected bool drawRay;
     public LayerMask damageableMask;
-    public float bulletDamage;
+    public byte bulletDamage;
     [SerializeField] protected Camera playerCamera;
 
     [Header("Physical Mode")]

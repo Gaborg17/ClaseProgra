@@ -12,7 +12,7 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public NetworkRunner runner;
 
-    [SerializeField] private UnityEvent joined;
+    [SerializeField] private UnityEvent Joined;
 
     [SerializeField] private NetworkPrefabRef playerPrefab;
     [SerializeField] private Transform spawnPoint;
@@ -77,7 +77,7 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        joined?.Invoke();
+        Joined?.Invoke();
 
         if (runner.IsServer)
         {

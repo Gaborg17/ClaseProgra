@@ -62,6 +62,10 @@ public class CameraController : NetworkBehaviour
         
     }
 
+    public override void Spawned()
+    {
+        
+    }
 
     public override void FixedUpdateNetwork()
     {
