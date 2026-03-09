@@ -29,7 +29,7 @@ public class WeaponHandler : NetworkBehaviour
                 Shoot = weaponInHand.PhysyicalShoot;
                 break;
             default:
-                Debug.Log("Sin tippo asignado");
+                Debug.Log("Sin tipo asignado");
                 break;
         }
     }

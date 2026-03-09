@@ -16,11 +16,14 @@ public abstract class Weapons : NetworkBehaviour
     public Transform bulletOrigin;
     public ushort inventoryAmmo;
 
+    public GameObject sparks;
+    public GameObject bulletHole;
 
     [Header("Raycast Mode")]
     public float weaponRange;
     protected bool drawRay;
     public LayerMask damageableMask;
+    public LayerMask walls;
     public byte bulletDamage;
     [SerializeField] protected Camera playerCamera;
 

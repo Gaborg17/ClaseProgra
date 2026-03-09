@@ -82,6 +82,7 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
         if (runner.IsServer)
         {
             runner.Spawn(playerPrefab, Vector3.zero, Quaternion.identity, player);
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
 

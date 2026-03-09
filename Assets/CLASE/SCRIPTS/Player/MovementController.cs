@@ -20,6 +20,7 @@ public class MovementController : NetworkBehaviour
     {
         inputManager = InputManager.Instance;
         rbPlayer = GetComponent<Rigidbody>();
+        
     }
 
 
@@ -54,7 +55,7 @@ public class MovementController : NetworkBehaviour
     {
         rbPlayer.linearVelocity = transform.localRotation * 
             new Vector3(input.playerPosition.x, 0, input.playerPosition.y) *
-            (Time.deltaTime * Speed());
+            Speed();
     }
 
     private float Speed()

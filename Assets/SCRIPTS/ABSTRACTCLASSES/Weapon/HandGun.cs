@@ -1,4 +1,5 @@
 using Fusion;
+using System.Threading.Tasks;
 using UnityEngine;
 using static Unity.Collections.Unicode;
 
@@ -6,7 +7,7 @@ public class HandGun : Weapons
 {
     private InputInfo info;
 
-
+    
 
     public override void RaycastShoot()
     {
@@ -25,7 +26,23 @@ public class HandGun : Weapons
             {
                 vida.RPC_TakeDamage(bulletDamage, info.Source);
             }
+
+            if (sparks != null)
+            {
+                GameObject hitEffect = Instantiate(sparks, hit.point, Quaternion.LookRotation(hit.normal));
+                Destroy(hitEffect, 0.4f);
+            }
         }
+
+        if(Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, weaponRange, walls))
+        {
+            if (bulletHole != null)
+            {
+                GameObject hitEffect = Instantiate(bulletHole, hit.point, Quaternion.LookRotation(-hit.normal));
+                Destroy(hitEffect, 0.3f);
+            }
+        }
+
     }
 
     public override void PhysyicalShoot()
@@ -56,4 +73,5 @@ public class HandGun : Weapons
         bulllet.GetComponent<Projectile>().SetData(info.Source,bulletDamage);
 
     }
+
 }

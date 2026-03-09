@@ -122,11 +122,16 @@ MonoBehaviour:
   isRecharging: 0
   bulletOrigin: {fileID: 510987610800462730}
   inventoryAmmo: 0
+  sparks: {fileID: 7022929526591943874, guid: 68469c370dd3a7940b4088b9907dcf44, type: 3}
+  bulletHole: {fileID: 3758219814626919366, guid: a2fee59efb6a32f468e7decf7d9faef9, type: 3}
   weaponRange: 15
   damageableMask:
     serializedVersion: 2
-    m_Bits: 128
-  bulletDamage: 0
+    m_Bits: 384
+  walls:
+    serializedVersion: 2
+    m_Bits: 512
+  bulletDamage: 50
   playerCamera: {fileID: 6632507903907867383}
   bulletPrefab:
     RawGuidValue: 47bfdf65f8167444da438a15137a477c
@@ -169,7 +174,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 247
+    m_Bits: 767
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -350,15 +355,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 55490c0cec081d54ead6cc6d7cbaecc4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.277157
+      value: -6.115526
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 55490c0cec081d54ead6cc6d7cbaecc4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.000099897385
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 55490c0cec081d54ead6cc6d7cbaecc4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.271341
+      value: -5.521405
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 55490c0cec081d54ead6cc6d7cbaecc4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -736,6 +741,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 55490c0cec081d54ead6cc6d7cbaecc4, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 55490c0cec081d54ead6cc6d7cbaecc4, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 1092408308860062549, guid: 55490c0cec081d54ead6cc6d7cbaecc4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 75.00568
@@ -1100,6 +1113,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 55490c0cec081d54ead6cc6d7cbaecc4, type: 3}
       insertIndex: -1
       addedObject: {fileID: -6552716923745089139}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 55490c0cec081d54ead6cc6d7cbaecc4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4408366961484529549}
   m_SourcePrefab: {fileID: 100100000, guid: 55490c0cec081d54ead6cc6d7cbaecc4, type: 3}
 --- !u!1 &8477299124430806214 stripped
 GameObject:
@@ -1209,8 +1225,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 2673441267138047136}
-  walkSpeed: 200
-  runSpeed: 300
+  walkSpeed: 15
+  runSpeed: 30
   crouchSpeed: 3.9
 --- !u!114 &7310286679688691697
 MonoBehaviour:
@@ -1260,6 +1276,7 @@ MonoBehaviour:
   - {fileID: 7310286679688691697}
   - {fileID: 4737237169342878489}
   - {fileID: -6552716923745089139}
+  - {fileID: 4408366961484529549}
   - {fileID: 4065693959280916102}
   - {fileID: 307644422146194193}
   ForceRemoteRenderTimeframe: 0
@@ -1310,6 +1327,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4408366961484529549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8477299124430806214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41d2396390a429c4cb55fbdfc7991c92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _team: 1
+  _timeInZone: 0
 --- !u!4 &9146452467039192700 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 55490c0cec081d54ead6cc6d7cbaecc4, type: 3}

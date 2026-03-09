@@ -18,7 +18,7 @@ public class Vida : NetworkBehaviour
     {
         currentHealth -= damage;
 
-        healthBar.fillAmount = (float)currentHealth / maxhealth;
+        //healthBar.fillAmount = (float)currentHealth / maxhealth;
 
         if(currentHealth <= 0)
         {
