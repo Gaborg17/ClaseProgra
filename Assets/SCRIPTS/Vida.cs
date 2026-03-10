@@ -23,6 +23,7 @@ public class Vida : NetworkBehaviour
         if(currentHealth <= 0)
         {
             OnDeath?.Invoke();
+            Object.gameObject.SetActive(false);
         }
     }
 

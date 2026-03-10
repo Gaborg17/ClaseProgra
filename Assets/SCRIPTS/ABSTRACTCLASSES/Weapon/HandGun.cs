@@ -29,6 +29,7 @@ public class HandGun : Weapons
 
             if (sparks != null)
             {
+                //Esta solo para que el cliente lo vea
                 GameObject hitEffect = Instantiate(sparks, hit.point, Quaternion.LookRotation(hit.normal));
                 Destroy(hitEffect, 0.4f);
             }
@@ -38,6 +39,8 @@ public class HandGun : Weapons
         {
             if (bulletHole != null)
             {
+
+                //Esta solo para que el cliente lo vea
                 GameObject hitEffect = Instantiate(bulletHole, hit.point, Quaternion.LookRotation(-hit.normal));
                 Destroy(hitEffect, 0.3f);
             }

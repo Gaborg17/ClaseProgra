@@ -77,14 +77,20 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        Joined?.Invoke();
+        if (player == runner.LocalPlayer)
+        {
+            Joined?.Invoke();
+        }
+            
 
         if (runner.IsServer)
         {
             runner.Spawn(playerPrefab, Vector3.zero, Quaternion.identity, player);
             Cursor.lockState = CursorLockMode.Locked;
+            
         }
 
+        
 
 
 
@@ -139,7 +145,7 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
             PlayerCount = 2,
         });
 
-
+        
 
 
     }
