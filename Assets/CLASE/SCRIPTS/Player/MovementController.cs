@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Fusion;
+using Fusion.Addons.SimpleKCC;
 
 [RequireComponent(typeof(Rigidbody), typeof(GroundCheck))]
 public class MovementController : NetworkBehaviour
@@ -15,11 +16,12 @@ public class MovementController : NetworkBehaviour
 
     private InputInfo input;
 
+    private SimpleKCC simpleKCC;
 
     public override void Spawned()
     {
         inputManager = InputManager.Instance;
-        rbPlayer = GetComponent<Rigidbody>();
+        simpleKCC = GetComponent<SimpleKCC>();
         
     }
 
@@ -53,9 +55,10 @@ public class MovementController : NetworkBehaviour
 
     private void Movement()
     {
-        rbPlayer.linearVelocity = transform.localRotation * 
-            new Vector3(input.playerPosition.x, 0, input.playerPosition.y) *
-            Speed();
+        Vector3 moveDirection = transform.forward * input.playerPosition.y + transform.right * input.playerPosition.x;
+        float currentSpeed = Speed();
+        Vector3 deltaMovement = moveDirection.normalized * (currentSpeed * Runner.DeltaTime);
+        simpleKCC.Move(deltaMovement);
     }
 
     private float Speed()

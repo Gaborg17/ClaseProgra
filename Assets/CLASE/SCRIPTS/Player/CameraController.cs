@@ -1,4 +1,5 @@
 ﻿using Fusion;
+using Fusion.Addons.SimpleKCC;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -42,6 +43,8 @@ public class CameraController : NetworkBehaviour
 
     private InputInfo input;
 
+    private SimpleKCC simpleKCC;
+
     private void Awake()
     {
         startPos = transform.localPosition;
@@ -55,15 +58,12 @@ public class CameraController : NetworkBehaviour
             player = FindFirstObjectByType<MovementController>().transform;
         }
 
+        simpleKCC = player.GetComponent<SimpleKCC>();
+
         Cursor.lockState = CursorLockMode.None;
         //Cursor.visible = false;
         
         
-        
-    }
-
-    public override void Spawned()
-    {
         
     }
 
@@ -86,7 +86,13 @@ public class CameraController : NetworkBehaviour
         camVelociy.y = Mathf.Clamp(camVelociy.y, minAngleY, maxAngleY); // Limita la rotacion de la camara en Y. En base el movimiento del mouse.
 
         transform.localRotation = Quaternion.AngleAxis(-camVelociy.y, Vector3.right); // Rota la camara hacia arriba y abajo. La rotacion esta en X. 
-        player.localRotation = Quaternion.AngleAxis(camVelociy.x, Vector3.up);
+
+        if(simpleKCC != null)
+        {
+            simpleKCC.AddLookRotation(0f, smoothVelocity.x);
+        }
+
+        //player.localRotation = Quaternion.AngleAxis(camVelociy.x, Vector3.up);
     }
     
    private void BlobMove()
