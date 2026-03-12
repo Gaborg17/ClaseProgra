@@ -13432,6 +13432,10 @@ PrefabInstance:
       propertyPath: SortKey
       value: 1008580156
       objectReference: {fileID: 0}
+    - target: {fileID: 4408366961484529549, guid: 62870733aac220449ad76e82c94ac08b, type: 3}
+      propertyPath: _team
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8477299124430806214, guid: 62870733aac220449ad76e82c94ac08b, type: 3}
       propertyPath: m_Name
       value: Player

@@ -9,8 +9,7 @@ using UnityEngine.Windows;
 
 public class CameraController : NetworkBehaviour
 {
-    [Header("Camera Settings")] [SerializeField]
-    private Transform player;
+    [Header("Camera Settings")]
 
     [SerializeField] private float mouseSensitivity = 1;
 
@@ -53,18 +52,27 @@ public class CameraController : NetworkBehaviour
     private void Start()
     {
         inputManager = InputManager.Instance;
-        if (player == null)
+        if (simpleKCC == null)
         {
-            player = FindFirstObjectByType<MovementController>().transform;
+            simpleKCC = GetComponentInParent<SimpleKCC>();
         }
 
-        simpleKCC = player.GetComponent<SimpleKCC>();
+
 
         Cursor.lockState = CursorLockMode.None;
         //Cursor.visible = false;
         
         
         
+    }
+
+    public override void Spawned()
+    {
+        if (!HasInputAuthority)
+        {
+            GetComponent<Camera>().enabled = false;
+            GetComponent<AudioListener>().enabled = false;
+        }
     }
 
     public override void FixedUpdateNetwork()

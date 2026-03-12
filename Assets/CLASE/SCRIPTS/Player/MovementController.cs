@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem;
 using Fusion;
 using Fusion.Addons.SimpleKCC;
+using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody), typeof(GroundCheck))]
 public class MovementController : NetworkBehaviour
@@ -18,11 +14,13 @@ public class MovementController : NetworkBehaviour
 
     private SimpleKCC simpleKCC;
 
+
     public override void Spawned()
     {
         inputManager = InputManager.Instance;
         simpleKCC = GetComponent<SimpleKCC>();
-        
+
+
     }
 
 
@@ -35,7 +33,7 @@ public class MovementController : NetworkBehaviour
             Animaciones();
         }
 
-        
+
 
     }
 
@@ -55,20 +53,18 @@ public class MovementController : NetworkBehaviour
 
     private void Movement()
     {
-        Vector3 moveDirection = transform.forward * input.playerPosition.y + transform.right * input.playerPosition.x;
-        float currentSpeed = Speed();
-        Vector3 deltaMovement = moveDirection.normalized * (currentSpeed * Runner.DeltaTime);
-        simpleKCC.Move(deltaMovement);
+        Vector3 kinematicVel = transform.localRotation * new Vector3(input.playerPosition.x, 0, input.playerPosition.y) * (Time.deltaTime * Speed());
+        simpleKCC.Move(kinematicVel);
     }
 
     private float Speed()
     {
-        return input.isMovingBackwards || input.isMovingOnXAxis ? walkSpeed :
-            input.isRunInputPressed ? runSpeed : walkSpeed;
+        return (input.isMovingBackwards || input.isMovingOnXAxis ? walkSpeed :
+            input.isRunInputPressed ? runSpeed : walkSpeed) * 100f;
     }
 
 
     #endregion
 
-  
+
 }
