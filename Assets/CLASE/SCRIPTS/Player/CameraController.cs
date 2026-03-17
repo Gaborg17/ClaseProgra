@@ -2,9 +2,7 @@
 using Fusion.Addons.SimpleKCC;
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
-using UnityEngine.Windows;
 
 
 public class CameraController : NetworkBehaviour
@@ -13,7 +11,8 @@ public class CameraController : NetworkBehaviour
 
     [SerializeField] private float mouseSensitivity = 1;
 
-    [FormerlySerializedAs("smooth")] [SerializeField]
+    [FormerlySerializedAs("smooth")]
+    [SerializeField]
     private float smoothnes;
 
     [SerializeField] private float maxAngleY = 80;
@@ -22,22 +21,22 @@ public class CameraController : NetworkBehaviour
     private Vector2 camVelociy;
     private Vector2 smoothVelocity;
 
-    [Header("Blob Movement")] 
+    [Header("Blob Movement")]
     [SerializeField] private float walkingSpeed = 1f;
-    
-    [SerializeField, Range(0,0.1f)] private float walkingAmplitude = 0.015f; // Que tanto se mueve hacia los lados al caminar
-    [SerializeField, Range(0,0.1f)] private float runningAmplitude = 0.015f; // Que tanto se mueve hacia los lados al correr
-    [SerializeField, Range(0,15)] private float walkingFrequency = 10.0f; // La frecuencia con la que se mueve al caminar
-    [SerializeField, Range(10,20)] private float runningFrequency = 18f; // La frecuencia con la que se mueve al correr
+
+    [SerializeField, Range(0, 0.1f)] private float walkingAmplitude = 0.015f; // Que tanto se mueve hacia los lados al caminar
+    [SerializeField, Range(0, 0.1f)] private float runningAmplitude = 0.015f; // Que tanto se mueve hacia los lados al correr
+    [SerializeField, Range(0, 15)] private float walkingFrequency = 10.0f; // La frecuencia con la que se mueve al caminar
+    [SerializeField, Range(10, 20)] private float runningFrequency = 18f; // La frecuencia con la que se mueve al correr
     [SerializeField] private float resetPosSpeed = 3.0f; // Cuando dejas de moverte que regrese al centro
     [SerializeField] private float toggleSpeed = 3.0f; // 
-    
+
     private Vector3 startPos; // Posicion inicial de la cabeza , el centro
 
     [SerializeField] private bool moveHead;
-    
+
     private Vector2 head;
-    
+
     private InputManager inputManager;
 
     private InputInfo input;
@@ -48,7 +47,7 @@ public class CameraController : NetworkBehaviour
     {
         startPos = transform.localPosition;
     }
-    
+
     private void Start()
     {
         inputManager = InputManager.Instance;
@@ -59,11 +58,11 @@ public class CameraController : NetworkBehaviour
 
 
 
-        Cursor.lockState = CursorLockMode.None;
+        //Cursor.lockState = CursorLockMode.Locked;
         //Cursor.visible = false;
-        
-        
-        
+
+
+
     }
 
     public override void Spawned()
@@ -86,6 +85,14 @@ public class CameraController : NetworkBehaviour
         }
     }
 
+    public override void Render()
+    {
+        if (!HasInputAuthority && !HasStateAuthority)
+        {
+            transform.localRotation = Quaternion.AngleAxis(-camVelociy.y, Vector3.right);
+        }
+
+    }
     private void RotateCamera()
     {
         Vector2 rawFrameVelocity = Vector2.Scale(input.lookDirection, Vector2.one * mouseSensitivity);
@@ -93,32 +100,32 @@ public class CameraController : NetworkBehaviour
         camVelociy += smoothVelocity;
         camVelociy.y = Mathf.Clamp(camVelociy.y, minAngleY, maxAngleY); // Limita la rotacion de la camara en Y. En base el movimiento del mouse.
 
-        transform.localRotation = Quaternion.AngleAxis(-camVelociy.y, Vector3.right); // Rota la camara hacia arriba y abajo. La rotacion esta en X. 
+        transform.localRotation = Quaternion.AngleAxis(-camVelociy.y, Vector3.right);
 
-        if(simpleKCC != null)
+        if (simpleKCC != null)
         {
             simpleKCC.AddLookRotation(0f, smoothVelocity.x);
         }
 
         //player.localRotation = Quaternion.AngleAxis(camVelociy.x, Vector3.up);
     }
-    
-   private void BlobMove()
+
+    private void BlobMove()
     {
         if (!input.isMoving) // Si no presiono ningun input
         {
             return; // termina el metodo
         }
-        
-        if(input.isMoving) // Pregunto si me estoy moviendo
+
+        if (input.isMoving) // Pregunto si me estoy moviendo
         {
-            if(input.isMovingBackwards || input.isMovingOnXAxis) // Me estoy moviendo hacia atras o hacia los lados?
+            if (input.isMovingBackwards || input.isMovingOnXAxis) // Me estoy moviendo hacia atras o hacia los lados?
             {
                 transform.localPosition += FootStepMotion();
             }
             else //  Entonces me muevo hacia adelante
             {
-                if(input.isRunInputPressed) // Estoy corriendo?
+                if (input.isRunInputPressed) // Estoy corriendo?
                 {
                     transform.localPosition += RunningFootStepMotion();
                 }
@@ -129,20 +136,20 @@ public class CameraController : NetworkBehaviour
             }
         }
 
-        if(input.isMoving)
+        if (input.isMoving)
         {
             transform.localPosition += input.isMovingBackwards || input.isMovingOnXAxis ? FootStepMotion() : input.isRunInputPressed ? RunningFootStepMotion() : FootStepMotion();
         }
-        
-        
-        
-    } 
+
+
+
+    }
 
     private void ResetPosition()
     {
-        if(transform.localPosition == startPos) return; // Si la camara ya esta en la pos inicial, no hace nada
+        if (transform.localPosition == startPos) return; // Si la camara ya esta en la pos inicial, no hace nada
         transform.localPosition = Vector3.Lerp(transform.localPosition, startPos, resetPosSpeed * Time.deltaTime);
-}
+    }
 
     private Vector3 FootStepMotion()
     {
@@ -151,8 +158,8 @@ public class CameraController : NetworkBehaviour
         pos.x = Mathf.Cos(Time.time * walkingFrequency / 2) * walkingAmplitude * 2 * walkingSpeed;
         return pos;
     }
-    
-    
+
+
     private Vector3 RunningFootStepMotion()
     {
         Vector3 pos = Vector3.zero;
@@ -160,5 +167,5 @@ public class CameraController : NetworkBehaviour
         pos.x = Mathf.Cos(Time.time * runningFrequency / 2) * runningAmplitude * 2 * walkingSpeed;
         return pos;
     }
-    
+
 }

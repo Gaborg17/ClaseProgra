@@ -1,4 +1,5 @@
 using Fusion;
+using Fusion.Addons.SimpleKCC;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -13,16 +14,18 @@ public class TriggerParticles : NetworkBehaviour
 
         if (other.CompareTag("Player"))
         {
-            NetworkObject playerNetObj = other.GetComponentInParent<NetworkObject>();
+            SimpleKCC playerNetObj = other.GetComponentInParent<SimpleKCC>();
 
 
             if (playerNetObj != null)
             {
                 NetworkObject particle = Runner.Spawn(particlePrefab);
                 NetworkTransform partTr = particle.GetComponent<NetworkTransform>();
-                particle.transform.SetParent(playerNetObj.transform, false);
                 partTr.SyncParent = true;
+                particle.transform.SetParent(playerNetObj.Transform);
+
                 particle.transform.localPosition = Vector3.zero;
+
 
                 Object.gameObject.SetActive(false);
                 DespawnParticle(particle);

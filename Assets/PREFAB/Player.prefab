@@ -250,7 +250,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cb9ab3e3c648b0429b68a5180e4fdd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 9146452467039192700}
   mouseSensitivity: 1
   smoothnes: 0
   maxAngleY: 80
@@ -1225,9 +1224,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 2673441267138047136}
-  walkSpeed: 5
-  runSpeed: 10
-  crouchSpeed: 3.9
+  walkSpeed: 10
+  runSpeed: 16
+  crouchSpeed: 5
 --- !u!114 &7310286679688691697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1322,7 +1321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41d2396390a429c4cb55fbdfc7991c92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _team: 1
+  _team: 0
   _timeInZone: 0
 --- !u!114 &4035245390827849724
 MonoBehaviour:
