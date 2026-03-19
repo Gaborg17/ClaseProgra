@@ -1,5 +1,6 @@
 using Fusion;
 using Fusion.Addons.SimpleKCC;
+using System.Linq;
 using UnityEngine;
 
 public enum Team { Red, Blue }
@@ -17,22 +18,22 @@ public class TeamHandler : NetworkBehaviour
         spawnPointManager = FindAnyObjectByType<SpawnPointManager>();
         simpleKCC = GetComponent<SimpleKCC>();
 
-        if (Runner.IsClient)
+        if (Runner.IsServer)
         {
-            team = Team.Red;
-            MoveToSpawn();
-            
+            team = AssignTeam();
         }
-        else if (Runner.IsServer)
-        {
-            team = Team.Blue;
-            MoveToSpawn();
-        }
+
+        MoveToSpawn();
     }
 
 
     public void MoveToSpawn()
     {
         simpleKCC.SetPosition(spawnPointManager.SetSpawn(team));
+    }
+
+    private Team AssignTeam()
+    {
+        return Runner.ActivePlayers.Count() % 2 == 0 ? Team.Red : Team.Blue;
     }
 }

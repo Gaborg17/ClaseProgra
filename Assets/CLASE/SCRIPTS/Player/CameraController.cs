@@ -76,7 +76,7 @@ public class CameraController : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if (HasInputAuthority && GetInput(out input))
+        if (GetInput(out input) && Object.HasInputAuthority)
         {
             RotateCamera();
             if (!moveHead) return;

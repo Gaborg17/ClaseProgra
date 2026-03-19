@@ -14,22 +14,25 @@ public class MovementController : NetworkBehaviour
 
     private SimpleKCC simpleKCC;
 
+    public Vector2 vector;
+    public Vector3 kinematicVel;
 
     public override void Spawned()
     {
         inputManager = InputManager.Instance;
         simpleKCC = GetComponent<SimpleKCC>();
 
-        simpleKCC.SetGravity(-9.8f);
+        //simpleKCC.SetGravity(-9.8f);
     }
 
 
     public override void FixedUpdateNetwork()
     {
 
-        if (HasInputAuthority && GetInput(out input))
+        if (GetInput(out input ) && Object.HasInputAuthority)
         {
             Movement();
+            vector = input.playerPosition;
             Animaciones();
         }
 
@@ -53,7 +56,8 @@ public class MovementController : NetworkBehaviour
 
     private void Movement()
     {
-        Vector3 kinematicVel = transform.localRotation * new Vector3(input.playerPosition.x, 0, input.playerPosition.y) * (Time.deltaTime * Speed());
+        Debug.Log($"InputAuthority: {HasInputAuthority}, StateAuthority: {HasStateAuthority}");
+        kinematicVel = transform.localRotation * new Vector3(input.playerPosition.x, 0, input.playerPosition.y) * (Time.deltaTime * Speed());
         simpleKCC.Move(kinematicVel);
     }
 

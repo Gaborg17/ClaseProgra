@@ -21,6 +21,7 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
     private void Awake()
     {
         runner = FindAnyObjectByType<NetworkRunner>();
+        runner.AddCallbacks(this);
     }
 
     public void OnConnectedToServer(NetworkRunner runner)
