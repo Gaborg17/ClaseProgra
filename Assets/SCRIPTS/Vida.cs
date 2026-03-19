@@ -26,10 +26,9 @@ public class Vida : NetworkBehaviour
 
         if(currentHealth <= 0)
         {
+            //Invoke del Metodo MoveToSpawn
             OnDeath?.Invoke();
-            Object.gameObject.SetActive(false);
-            simpleKCC = GetComponent<SimpleKCC>();
-            simpleKCC.SetPosition(new Vector3(10,1,10));
+            
         }
     }
 

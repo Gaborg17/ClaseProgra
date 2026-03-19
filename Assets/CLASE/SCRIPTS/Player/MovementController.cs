@@ -20,7 +20,7 @@ public class MovementController : NetworkBehaviour
         inputManager = InputManager.Instance;
         simpleKCC = GetComponent<SimpleKCC>();
 
-
+        simpleKCC.SetGravity(-9.8f);
     }
 
 
