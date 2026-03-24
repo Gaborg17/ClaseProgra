@@ -18,7 +18,7 @@ public class CameraController : NetworkBehaviour
     [SerializeField] private float maxAngleY = 80;
     [SerializeField] private float minAngleY = -80;
 
-    private Vector2 camVelociy;
+    [Networked] private Vector2 camVelociy { get; set; }
     private Vector2 smoothVelocity;
 
     [Header("Blob Movement")]
@@ -76,12 +76,12 @@ public class CameraController : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if (GetInput(out input) && Object.HasInputAuthority)
+        if (GetInput(out input))
         {
             RotateCamera();
-            if (!moveHead) return;
-            BlobMove();
-            ResetPosition();
+            //if (!moveHead) return;
+            //BlobMove();
+            //ResetPosition();
         }
     }
 
@@ -97,14 +97,16 @@ public class CameraController : NetworkBehaviour
     {
         Vector2 rawFrameVelocity = Vector2.Scale(input.lookDirection, Vector2.one * mouseSensitivity);
         smoothVelocity = Vector2.Lerp(smoothVelocity, rawFrameVelocity, 1 / smoothnes); // Te mueve desde donde tengas el mouse, a la nueva posicion del mouse
-        camVelociy += smoothVelocity;
-        camVelociy.y = Mathf.Clamp(camVelociy.y, minAngleY, maxAngleY); // Limita la rotacion de la camara en Y. En base el movimiento del mouse.
+        Vector2 currentVelocity = camVelociy;
+        currentVelocity += smoothVelocity;
+        currentVelocity.y = Mathf.Clamp(currentVelocity.y, minAngleY, maxAngleY); // Limita la rotacion de la camara en Y. En base el movimiento del mouse.
+        camVelociy = currentVelocity;
 
         transform.localRotation = Quaternion.AngleAxis(-camVelociy.y, Vector3.right);
 
         if (simpleKCC != null)
         {
-            simpleKCC.AddLookRotation(0f, smoothVelocity.x);
+            simpleKCC.AddLookRotation(-smoothVelocity.y, smoothVelocity.x);
         }
 
         //player.localRotation = Quaternion.AngleAxis(camVelociy.x, Vector3.up);

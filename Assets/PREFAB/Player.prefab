@@ -250,8 +250,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cb9ab3e3c648b0429b68a5180e4fdd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 1
-  smoothnes: 0
+  mouseSensitivity: 0.8
+  smoothnes: 1
   maxAngleY: 80
   minAngleY: -80
   walkingSpeed: 1
@@ -1224,6 +1224,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 2673441267138047136}
+  vector: {x: 0, y: 0}
+  kinematicVel: {x: 0, y: 0, z: 0}
   walkSpeed: 10
   runSpeed: 16
   crouchSpeed: 5

@@ -29,17 +29,21 @@ public class MovementController : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
 
-        if (GetInput(out input ) && Object.HasInputAuthority)
+        if (GetInput(out input ) && HasStateAuthority)
         {
             Movement();
             vector = input.playerPosition;
-            Animaciones();
+
         }
 
 
 
     }
 
+    public override void Render()
+    {
+        Animaciones();
+    }
     private void Animaciones()
     {
         _animator.SetBool("IsWalking", input.isMoving);
@@ -57,7 +61,7 @@ public class MovementController : NetworkBehaviour
     private void Movement()
     {
         Debug.Log($"InputAuthority: {HasInputAuthority}, StateAuthority: {HasStateAuthority}");
-        kinematicVel = transform.localRotation * new Vector3(input.playerPosition.x, 0, input.playerPosition.y) * (Time.deltaTime * Speed());
+        kinematicVel = transform.localRotation * new Vector3(input.playerPosition.x, 0, input.playerPosition.y) * (Runner.DeltaTime * Speed());
         simpleKCC.Move(kinematicVel);
     }
 
