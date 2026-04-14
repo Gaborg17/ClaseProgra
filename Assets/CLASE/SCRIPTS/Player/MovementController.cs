@@ -60,7 +60,7 @@ public class MovementController : NetworkBehaviour
 
     private void Movement()
     {
-        Debug.Log($"InputAuthority: {HasInputAuthority}, StateAuthority: {HasStateAuthority}");
+        
         kinematicVel = transform.localRotation * new Vector3(input.playerPosition.x, 0, input.playerPosition.y) * (Runner.DeltaTime * Speed());
         simpleKCC.Move(kinematicVel);
     }
