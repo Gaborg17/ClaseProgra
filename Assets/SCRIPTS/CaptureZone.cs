@@ -1,6 +1,8 @@
 using Fusion;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CaptureZone : NetworkBehaviour
 {
@@ -15,6 +17,8 @@ public class CaptureZone : NetworkBehaviour
     [Networked] public float TeamRedTime { get; set; }
 
 
+    
+    [SerializeField]private UnityEvent<Team> OnWin;
 
 
     public override void FixedUpdateNetwork()
@@ -69,6 +73,7 @@ public class CaptureZone : NetworkBehaviour
     private void RPC_ShowWin(Team winningTeam)
     {
         Debug.Log($"¡El equipo {winningTeam} ha ganado!");
+        OnWin?.Invoke(winningTeam);
     }
 
 

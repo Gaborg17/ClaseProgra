@@ -1,4 +1,5 @@
 using Fusion;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,9 @@ public class ProgressBars : MonoBehaviour
     [SerializeField] private Image localProgress;
     [SerializeField] private Slider otherProgressBar;
     [SerializeField] private Image otherProgress;
+    [SerializeField] private Image winning;
+    public Image healthBar;
+    [SerializeField] private TextMeshProUGUI winnerText;
 
 
     [Header("Team Red")]
@@ -79,6 +83,24 @@ public class ProgressBars : MonoBehaviour
         {
             localProgressBar.value = redPer;
             otherProgressBar.value = bluePer;
+        }
+    }
+
+    public void ShowWin(Team winningTeam)
+    {
+        winning.gameObject.SetActive(true);
+
+        if (winningTeam == Team.Blue)
+        {
+            winning.color = blueTeamColor;
+            winnerText.text = "Blue Team Wins!!";
+            winnerText.gameObject.SetActive(true);
+        }
+        else
+        {
+            winning.color = redTeamColor;
+            winnerText.text = "Red Team Wins!!";
+            winnerText.gameObject.SetActive(true);
         }
     }
 

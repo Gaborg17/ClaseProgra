@@ -2,9 +2,11 @@ using Fusion;
 using System;
 using UnityEngine;
 using UnityEngine.Windows;
+using System.Threading.Tasks;
 
 public class WeaponHandler : NetworkBehaviour
 {
+    [Networked] private TickTimer shootCooldown { get; set; }
     public Weapons weaponInHand;
 
     private InputInfo input;
@@ -13,10 +15,15 @@ public class WeaponHandler : NetworkBehaviour
 
     public void ShootWeapon()
     {
-        if (input.isFirePressed)
-        {
-            Shoot();
-        }
+        if (!input.isFirePressed) return;
+
+        
+        if (!shootCooldown.ExpiredOrNotRunning(Runner)) return;
+
+        Shoot();
+
+        
+        shootCooldown = TickTimer.CreateFromSeconds(Runner, weaponInHand.fireRate);
     }
     private void Start()
     {
@@ -51,4 +58,6 @@ public class WeaponHandler : NetworkBehaviour
             ReloadWeapon();
         }
     }
+
+
 }
