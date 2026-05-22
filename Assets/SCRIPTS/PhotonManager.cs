@@ -2,7 +2,7 @@ using Fusion;
 using Fusion.Sockets;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -13,7 +13,8 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
     public NetworkRunner runner;
 
     [SerializeField] private UnityEvent Joined;
-    
+    [SerializeField] private UnityEvent<List<SessionInfo>> onSessionListUpdated;
+
 
     [SerializeField] private NetworkPrefabRef playerPrefab;
     [SerializeField] private Transform spawnPoint;
@@ -62,7 +63,7 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
             isReloadPressed = InputManager.Instance.IsReloadPressed()
         };
         input.Set(info);
-        
+
     }
 
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
@@ -80,7 +81,7 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
 
-            
+
 
         if (runner.IsServer)
         {
@@ -121,7 +122,17 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
+        //onSessionListUpdated?.Invoke(sessionList);
     }
+
+    public async void ConnectToPhotonLobby()
+    {
+        if (!runner.IsRunning) return;
+
+        await runner.JoinSessionLobby(SessionLobby.ClientServer);
+
+    }
+
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
@@ -131,8 +142,29 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
     {
     }
 
-    public async Task StartGame(GameMode mode)
+    public async void StartRandomGame()
     {
+
+        runner.ProvideInput = true;
+
+        var scene = SceneRef.FromIndex(1);
+
+        var sceneInfo = new NetworkSceneInfo();
+        sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
+        sessionGeneratedName = RandomServerName();
+        await runner.StartGame(new StartGameArgs
+        {
+            GameMode = GameMode.Host,
+            SessionName = sessionGeneratedName,
+            Scene = sceneInfo,
+            CustomLobbyName = "Server: " + sessionGeneratedName,
+            PlayerCount = 2,
+        });
+
+    }
+    public async void StartCustomGame()
+    {
+
         runner.ProvideInput = true;
 
         var scene = SceneRef.FromIndex(1);
@@ -142,29 +174,46 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
 
         await runner.StartGame(new StartGameArgs
         {
-            GameMode = mode,
+            GameMode = GameMode.Host,
             SessionName = "MiPartida",
             Scene = sceneInfo,
+            CustomLobbyName = "Ea",
             PlayerCount = 2,
         });
 
-        
-
-
     }
 
-    public void CreateGame()
+    public void CreateRandomGame()
     {
-        StartGame(GameMode.Host);
-        Debug.Log("Joined as Host");
+        StartRandomGame();
     }
 
     public void JoinGame()
     {
-        StartGame(GameMode.Client);
-        Debug.Log("Joined as Client");
+
 
     }
 
+    [SerializeField] private int randomNameMaxLength;
+    private string sessionGeneratedName;
 
+    [ContextMenu("Random")]
+    public string RandomServerName()
+    {
+        string characters = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789";
+        char[] character = characters.ToCharArray();
+
+
+        StringBuilder sessionName = new StringBuilder();
+
+        for (int i = 0; i < randomNameMaxLength; i++)
+        {
+            int charPos = UnityEngine.Random.Range(0, character.Length);
+            sessionName.Append(character[charPos]);
+        }
+
+        Debug.Log(sessionName.ToString());
+        
+        return sessionName.ToString();
+    }
 }
