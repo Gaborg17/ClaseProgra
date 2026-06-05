@@ -28,4 +28,9 @@ public class SessionEntry : MonoBehaviour
         playerCountLbl.text = $"{playersInGame}/{maxPlayers}";
     }
 
+
+    public void JoinGame()
+    {
+
+    }
 }

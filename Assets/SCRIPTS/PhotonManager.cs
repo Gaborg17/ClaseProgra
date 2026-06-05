@@ -4,16 +4,19 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
 {
+    public static PhotonManager Instance;
 
     public NetworkRunner runner;
 
-    [SerializeField] private UnityEvent Joined;
-    [SerializeField] private UnityEvent<List<SessionInfo>> onSessionListUpdated;
+
+
+    public event Action Joined;
+    public event Action<List<SessionInfo>> onSessionListUpdated;
+
 
 
     [SerializeField] private NetworkPrefabRef playerPrefab;
@@ -21,6 +24,15 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+
         runner = FindAnyObjectByType<NetworkRunner>();
         runner.AddCallbacks(this);
     }
@@ -122,12 +134,14 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
-        //onSessionListUpdated?.Invoke(sessionList);
+
+        onSessionListUpdated?.Invoke(sessionList);
     }
 
     public async void ConnectToPhotonLobby()
     {
-        if (!runner.IsRunning) return;
+        
+       
 
         await runner.JoinSessionLobby(SessionLobby.ClientServer);
 
@@ -213,7 +227,7 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
         }
 
         Debug.Log(sessionName.ToString());
-        
+
         return sessionName.ToString();
     }
 }

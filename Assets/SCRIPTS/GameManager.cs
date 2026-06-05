@@ -13,13 +13,16 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(go);
         }
     }
-
+    private void OnEnable()
+    {
+        
+    }
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        PhotonManager.Instance.Joined += CloseScene;
     }
 
     // Update is called once per frame
@@ -28,9 +31,9 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public void CloseScene(int sceneNum)
+    public void CloseScene()
     {
        
-        SceneManager.UnloadSceneAsync(sceneNum);
+        SceneManager.UnloadSceneAsync(0);
     }
 }
