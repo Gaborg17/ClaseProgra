@@ -3,8 +3,10 @@ using Fusion.Sockets;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
 {
@@ -12,7 +14,7 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public NetworkRunner runner;
 
-
+    [SerializeField] NetworkSceneManagerDefault sceneManager;
 
     public event Action Joined;
     public event Action<List<SessionInfo>> onSessionListUpdated;
@@ -134,17 +136,14 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
-
         onSessionListUpdated?.Invoke(sessionList);
     }
 
     public async void ConnectToPhotonLobby()
     {
-        
-       
-
         await runner.JoinSessionLobby(SessionLobby.ClientServer);
-
+        sessionNameSetter.interactable = true;
+        playerCountSelector.interactable = true;
     }
 
 
@@ -164,8 +163,15 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
         var scene = SceneRef.FromIndex(1);
 
         var sceneInfo = new NetworkSceneInfo();
-        sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
+        if (scene.IsValid)
+        {
+            sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
+        }
         sessionGeneratedName = RandomServerName();
+        var sessionProperties = new Dictionary<string, SessionProperty>();
+        sessionProperties.Add("GameMode", "Control");
+        sessionProperties.Add("MapName", "BattleGround");
+
         await runner.StartGame(new StartGameArgs
         {
             GameMode = GameMode.Host,
@@ -173,39 +179,80 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
             Scene = sceneInfo,
             CustomLobbyName = "Server: " + sessionGeneratedName,
             PlayerCount = 2,
+            SessionProperties = sessionProperties
         });
 
     }
+
+    public string sessionCustomName;
+    public int customPlayerCount = 2;
+
+    [SerializeField] private TMP_Dropdown playerCountSelector;
+    [SerializeField] private TMP_InputField sessionNameSetter;
+    [SerializeField] private Button createCustomButton;
+
+    public void SetName()
+    {
+        sessionCustomName = sessionNameSetter.text;
+        createCustomButton.interactable = !string.IsNullOrWhiteSpace(sessionCustomName);
+    }
+
+    public void SetPlayerCount()
+    {
+        customPlayerCount = int.Parse(playerCountSelector.options[playerCountSelector.value].text);
+    }
+
+
     public async void StartCustomGame()
     {
-
         runner.ProvideInput = true;
 
         var scene = SceneRef.FromIndex(1);
 
         var sceneInfo = new NetworkSceneInfo();
         sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
-
+        var sessionProperties = new Dictionary<string, SessionProperty>();
+        sessionProperties.Add("GameMode", "Control");
+        sessionProperties.Add("MapName", "BattleGround");
         await runner.StartGame(new StartGameArgs
         {
             GameMode = GameMode.Host,
-            SessionName = "MiPartida",
+            SessionName = sessionCustomName,
             Scene = sceneInfo,
-            CustomLobbyName = "Ea",
-            PlayerCount = 2,
+            CustomLobbyName = sessionCustomName,
+            PlayerCount = customPlayerCount,
+            SessionProperties = sessionProperties
         });
 
+    }
+
+
+    public async void JoinGame(string sessionName)
+    {
+        runner.ProvideInput = true;
+
+        var scene = SceneRef.FromIndex(1);
+
+        var sceneInfo = new NetworkSceneInfo();
+
+        if (scene.IsValid)
+        {
+            sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
+        }
+
+        await runner.StartGame(new StartGameArgs
+        {
+            GameMode = GameMode.Client,
+            SessionName = sessionName,
+            Scene = scene,
+           
+
+        });
     }
 
     public void CreateRandomGame()
     {
         StartRandomGame();
-    }
-
-    public void JoinGame()
-    {
-
-
     }
 
     [SerializeField] private int randomNameMaxLength;

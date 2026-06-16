@@ -1,5 +1,8 @@
+using Fusion;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using WebSocketSharp;
 
 public class SessionEntry : MonoBehaviour
 {
@@ -14,13 +17,13 @@ public class SessionEntry : MonoBehaviour
     private int playersInGame;
     private int maxPlayers;
 
-    public void SetSessionInfo(string serverName, string gameMode, string mapName, int playersInGame, int maxPlayers)
+    public void SetSessionInfo(SessionInfo info)
     {
-        this.serverName = serverName;
-        this.gameMode = gameMode;
-        this.mapName = mapName;
-        this.playersInGame = playersInGame;
-        this.maxPlayers = maxPlayers;
+        this.serverName = info.Name;
+        this.gameMode = info.Properties["GameMode"];
+        this.mapName = info.Properties["MapName"];
+        this.playersInGame = info.PlayerCount;
+        this.maxPlayers = info.MaxPlayers;
 
         serverNameLbl.text = serverName;
         gameModeLbl.text = gameMode;
@@ -31,6 +34,9 @@ public class SessionEntry : MonoBehaviour
 
     public void JoinGame()
     {
-
+        if (!serverName.IsNullOrEmpty())
+            PhotonManager.Instance.JoinGame(serverName);
+        else
+            Debug.Log("No existe la sesion");
     }
 }

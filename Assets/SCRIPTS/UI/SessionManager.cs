@@ -1,6 +1,5 @@
 using Fusion;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class SessionManager : MonoBehaviour
@@ -22,36 +21,46 @@ public class SessionManager : MonoBehaviour
 
     private void Start()
     {
-        
+
     }
 
     public void OnSessionListUpdated(List<SessionInfo> sessionList)
     {
         this.sessionList = sessionList;
 
-        if(sessionList.Count == 0)
+        if (sessionList.Count == 0)
         {
             noSessionMsg.SetActive(true);
         }
         else
         {
-            UpdateSessionListInCanvas(sessionList);
+            UpdateSessionListInCanvas();
         }
     }
 
 
-    public void UpdateSessionListInCanvas(List<SessionInfo> sessionList)
+    public void UpdateSessionListInCanvas()
     {
         noSessionMsg.SetActive(false);
+        DestroyVIewPortContent();
 
-        for (int session = 0;  session < sessionList.Count; session++)
+
+        for (int session = 0; session < sessionList.Count; session++)
         {
             GameObject sessionInfo = Instantiate(sessionPrefab, viewportContent);
             SessionEntry sEntry = sessionInfo.GetComponent<SessionEntry>();
             if (sEntry != null)
             {
-                sEntry.SetSessionInfo(sessionList[session].Name, sessionList[session].Region, "mapName", sessionList[session].PlayerCount, sessionList[session].MaxPlayers);
+                sEntry.SetSessionInfo(sessionList[session]);
             }
+        }
+    }
+
+    private void DestroyVIewPortContent()
+    {
+        for (int session = 0; session < viewportContent.childCount; session++)
+        {
+            Destroy(viewportContent.GetChild(session));
         }
     }
 
