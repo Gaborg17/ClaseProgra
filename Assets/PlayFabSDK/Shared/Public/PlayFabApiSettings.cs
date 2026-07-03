@@ -61,13 +61,13 @@ namespace PlayFab
             set { var so = GetSO(); if (so != null) so.VerticalName = value; base.VerticalName = value; }
         }
 
-#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || UNITY_EDITOR || ENABLE_PLAYFAB_SECRETKEY
+
         public override string DeveloperSecretKey
         {
             get { var so = GetSO(); return so == null ? base.DeveloperSecretKey : so.DeveloperSecretKey; }
             set { var so = GetSO(); if (so != null) so.DeveloperSecretKey = value; base.DeveloperSecretKey = value; }
         }
-#endif
+
 
         public override string TitleId
         {

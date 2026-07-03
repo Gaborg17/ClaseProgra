@@ -144,6 +144,7 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
         await runner.JoinSessionLobby(SessionLobby.ClientServer);
         sessionNameSetter.interactable = true;
         playerCountSelector.interactable = true;
+        createRandomButton.interactable = true;
     }
 
 
@@ -190,6 +191,7 @@ public class PhotonManager : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] private TMP_Dropdown playerCountSelector;
     [SerializeField] private TMP_InputField sessionNameSetter;
     [SerializeField] private Button createCustomButton;
+    [SerializeField] private Button createRandomButton;
 
     public void SetName()
     {

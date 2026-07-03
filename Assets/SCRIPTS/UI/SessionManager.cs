@@ -58,9 +58,9 @@ public class SessionManager : MonoBehaviour
 
     private void DestroyVIewPortContent()
     {
-        for (int session = 0; session < viewportContent.childCount; session++)
+        for (int i = viewportContent.childCount - 1; i >= 0; i--)
         {
-            Destroy(viewportContent.GetChild(session));
+            Destroy(viewportContent.GetChild(i).gameObject);
         }
     }
 

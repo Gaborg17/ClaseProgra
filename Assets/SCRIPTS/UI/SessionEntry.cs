@@ -34,6 +34,9 @@ public class SessionEntry : MonoBehaviour
 
     public void JoinGame()
     {
+        if (playersInGame == maxPlayers) return;
+
+
         if (!serverName.IsNullOrEmpty())
             PhotonManager.Instance.JoinGame(serverName);
         else
