@@ -10,6 +10,8 @@ using WebSocketSharp;
 
 public class PlayFabManager : MonoBehaviour
 {
+    public static PlayFabManager Instance;
+
     [Header("Register Data")]
     [SerializeField] private TMP_InputField registerUsername;
     [SerializeField] private TMP_InputField registerEmail;
@@ -30,9 +32,19 @@ public class PlayFabManager : MonoBehaviour
 
     [SerializeField] private GameObject loginRegisterPanel;
 
+    public event Action<Dictionary<string, string>> OnRecievedData;
 
     void Start()
     {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else if(Instance != null)
+        {
+            Destroy(this.gameObject);
+        }
+
         if (string.IsNullOrEmpty(PlayFabSettings.TitleId))
         {
             PlayFabSettings.TitleId = "E820E";
@@ -79,6 +91,10 @@ public class PlayFabManager : MonoBehaviour
             var registerTask = RegisterUserInPlayFabTask();
             await registerTask;
             loginRegisterPanel.SetActive(false);
+            registerUsername.text = string.Empty;
+            registerEmail.text = string.Empty;
+            registerPassword.text = string.Empty;
+            confirmedPassword.text = string.Empty;
         }
         catch (Exception error)
         {
@@ -115,6 +131,8 @@ public class PlayFabManager : MonoBehaviour
             await loginTask;
             Debug.Log("Inicio de Sesion Exitoso");
             loginRegisterPanel.SetActive(false);
+            loginEmail.text = string.Empty;
+            loginPassword.text = string.Empty;
 
         }
         catch (Exception error)
