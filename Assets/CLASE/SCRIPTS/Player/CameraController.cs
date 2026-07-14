@@ -71,6 +71,7 @@ public class CameraController : NetworkBehaviour
         {
             GetComponent<Camera>().enabled = false;
             GetComponent<AudioListener>().enabled = false;
+
         }
     }
 

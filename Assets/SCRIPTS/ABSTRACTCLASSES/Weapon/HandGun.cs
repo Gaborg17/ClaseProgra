@@ -18,7 +18,7 @@ public class HandGun : Weapons
     [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
     private void RPC_RaycastShoot(RpcInfo info = default)
     {
-
+        PlayerRef shooterRef = Object.InputAuthority;
 
         if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, weaponRange, damageableMask))
         {
@@ -26,7 +26,7 @@ public class HandGun : Weapons
             Debug.Log($"Disparando a {hit.collider.name}");
             if(hit.collider.TryGetComponent(out Vida vida))
             {
-                vida.RPC_TakeDamage(bulletDamage, info.Source);
+                vida.RPC_TakeDamage(bulletDamage, shooterRef);
             }
 
             if (sparks != null)

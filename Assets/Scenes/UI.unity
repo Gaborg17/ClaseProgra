@@ -8598,10 +8598,9 @@ MonoBehaviour:
   loginPassword: {fileID: 572671453}
   loginEmail: {fileID: 2111292452}
   loginButton: {fileID: 88065376}
-  timeInPoint: 0
+  victories: 0
   kills: 0
   deaths: 0
-  kdRatio: 0
   loginRegisterPanel: {fileID: 62453016}
 --- !u!4 &1379996662
 Transform:
@@ -8611,12 +8610,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1379996660}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1476618240}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1387248672
 GameObject:
@@ -9676,6 +9675,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1590283086}
+  - {fileID: 1379996662}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1476618241
@@ -9717,6 +9717,7 @@ MonoBehaviour:
   dontDestroy:
   - {fileID: 1476618237}
   - {fileID: 1590283085}
+  - {fileID: 1379996660}
 --- !u!114 &1476618245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14857,4 +14858,3 @@ SceneRoots:
   - {fileID: 305577771}
   - {fileID: 1476618240}
   - {fileID: 1374215533}
-  - {fileID: 1379996662}

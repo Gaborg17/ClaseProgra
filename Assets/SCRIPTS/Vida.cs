@@ -1,7 +1,5 @@
 using Fusion;
 using Fusion.Addons.SimpleKCC;
-using System;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -9,9 +7,9 @@ using UnityEngine.UI;
 public class Vida : NetworkBehaviour
 {
     [SerializeField] private byte currentHealth;
-    [Networked]private byte _currentHealth { get; set;}
-    [SerializeField]private byte maxhealth;
-    [SerializeField]private Image healthBar;
+    [Networked] private byte _currentHealth { get; set; }
+    [SerializeField] private byte maxhealth;
+    [SerializeField] private Image healthBar;
 
     [SerializeField] private UnityEvent OnDeath;
 
@@ -20,7 +18,7 @@ public class Vida : NetworkBehaviour
     [Networked] private TickTimer HealDelay { get; set; }
     [Networked] private TickTimer HealTick { get; set; }
 
-    
+
     [SerializeField] private Image headHealthBar;
     [SerializeField] private GameObject headHB;
     private Camera cam;
@@ -32,7 +30,7 @@ public class Vida : NetworkBehaviour
         {
             _currentHealth = maxhealth;
         }
-       
+
         if (Object.HasInputAuthority)
         {
             ProgressBars pB = FindAnyObjectByType<ProgressBars>();
@@ -41,7 +39,7 @@ public class Vida : NetworkBehaviour
 
         cam = Camera.main ?? FindAnyObjectByType<Camera>();
 
-        
+
         if (!Object.HasInputAuthority && headHB != null)
         {
             headHB.SetActive(true);
@@ -61,10 +59,30 @@ public class Vida : NetworkBehaviour
 
         if (_currentHealth <= 0 || _currentHealth > maxhealth)
         {
+            var victimStats = GetComponent<PlayerStats>();
+            if (victimStats != null)
+                victimStats.AddDeath();
+
+
+            NetworkObject shooterObj = Runner.GetPlayerObject(shooter);
+
+            if (shooterObj != null)
+            {
+                var killerStats = shooterObj.GetComponent<PlayerStats>();
+                if (killerStats != null)
+                    killerStats.RPC_AddKill();
+            }
+            else
+            {
+                Debug.Log("no se encontro al shooter");
+            }
+
+
+
             //Invoke del Metodo MoveToSpawn
             OnDeath?.Invoke();
             _currentHealth = maxhealth;
-            
+
         }
     }
     private void Update()
@@ -94,12 +112,12 @@ public class Vida : NetworkBehaviour
             return;
         if (HealDelay.IsRunning && HealDelay.Expired(Runner))
         {
-            
+
             HealTick = TickTimer.CreateFromSeconds(Runner, .1f);
             HealDelay = TickTimer.None;
         }
 
-        
+
         if (HealTick.IsRunning && HealTick.Expired(Runner))
         {
             _currentHealth = (byte)Mathf.Min(_currentHealth + 1, maxhealth);

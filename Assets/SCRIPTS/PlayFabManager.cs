@@ -2,6 +2,7 @@ using PlayFab;
 using PlayFab.ClientModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -25,14 +26,14 @@ public class PlayFabManager : MonoBehaviour
     [SerializeField] private Button loginButton;
 
     [Header("Player Data")]
-    [SerializeField] private float timeInPoint;
-    [SerializeField] private int kills;
-    [SerializeField] private int deaths;
-    [SerializeField] private float kdRatio;
+     public int victories;
+     public int kills;
+     public int deaths;
+
 
     [SerializeField] private GameObject loginRegisterPanel;
 
-    public event Action<Dictionary<string, string>> OnRecievedData;
+    public event Action<Dictionary<string, string>> OnReceivedData;
 
     void Start()
     {
@@ -52,7 +53,7 @@ public class PlayFabManager : MonoBehaviour
 
         if (string.IsNullOrEmpty(PlayFabSettings.DeveloperSecretKey))
         {
-            PlayFabSettings.DeveloperSecretKey = "";
+            PlayFabSettings.DeveloperSecretKey = "TXMNQ1N47K7FOIYXDPNCN7XY6OMUKEJSTXN3AHPGE9M6Q1XQRD";
         }
     }
 
@@ -181,7 +182,7 @@ public class PlayFabManager : MonoBehaviour
         {
             Data = new Dictionary<string, string>
             {
-                {"TimeInPoint", timeInPoint.ToString()},
+                {"Victories", victories.ToString()},
                 {"Kills", kills.ToString()},
                 {"Deaths", deaths.ToString()}
             }
@@ -201,10 +202,17 @@ public class PlayFabManager : MonoBehaviour
         {
             var playerDataTask = GetPlayerDataTask();
             await playerDataTask;
-            foreach (var entry in playerDataTask.Result.Data)
+            if (playerDataTask.Result.Data != null)
             {
-                Debug.Log($"{entry.Key}: {entry.Value.Value}");
+                Dictionary<string, string> dataDic = playerDataTask.Result.Data.ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value.Value
+                    );
+
+                OnReceivedData?.Invoke(dataDic);
             }
+
+
         }
         catch (Exception error)
         {
@@ -220,7 +228,7 @@ public class PlayFabManager : MonoBehaviour
         {
             Keys = new List<string>
             {
-                "TimeInPoint",
+                "Victories",
                 "Kills",
                 "Deaths"
             }
