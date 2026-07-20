@@ -32,7 +32,7 @@ public class PlayFabManager : MonoBehaviour
 
 
     [SerializeField] private GameObject loginRegisterPanel;
-
+    
     public event Action<Dictionary<string, string>> OnReceivedData;
 
     void Start()
@@ -51,10 +51,7 @@ public class PlayFabManager : MonoBehaviour
             PlayFabSettings.TitleId = "E820E";
         }
 
-        if (string.IsNullOrEmpty(PlayFabSettings.DeveloperSecretKey))
-        {
-            PlayFabSettings.DeveloperSecretKey = "TXMNQ1N47K7FOIYXDPNCN7XY6OMUKEJSTXN3AHPGE9M6Q1XQRD";
-        }
+
     }
 
     //public void RegisterUser()
